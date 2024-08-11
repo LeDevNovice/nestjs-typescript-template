@@ -16,6 +16,7 @@ import {
   appAuthor,
 } from './utils/get-project-data';
 import generateValidationErrors from './utils/generate-validation-errors';
+import { HttpExceptionFilter } from './utils/ExceptionFilters/httpExceptionFilter';
 // import { EnvironmentVariablesDto } from './config/dto/config.dto';
 
 export function configureApp(app: NestFastifyApplication) {
@@ -34,6 +35,8 @@ export function configureApp(app: NestFastifyApplication) {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('docs', app, document);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.useGlobalPipes(
     new ValidationPipe({
